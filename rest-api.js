@@ -50,21 +50,25 @@
 // }
 
 const formEl = document.querySelector("form");
-const divEl = document.querySelector('div')
+const divEl = document.querySelector("div");
+
+const BASE_URL = "https://newsapi.org/v2/everything";
+const apiKey = "4cb0d0900a824cada0e90e272a031922";
+let page = 1;
 
 formEl.addEventListener("submit", (ev) => {
   ev.preventDefault();
-  searchArticlesByName(ev.currentTarget.elements.query.value)
-  .then((respons)=>{
-   let murkap = respons.articles.map(createArticleMarkup)
-   divEl.innerHTML = murkap 
-   console.log(murkap)
-  })
+  searchArticlesByName(ev.currentTarget.elements.query.value).then(
+    (respons) => {
+      let murkap = respons.articles.map(createArticleMarkup);
+      divEl.innerHTML = murkap;
+    }
+  );
   formEl.reset();
 });
 function searchArticlesByName(news) {
   return fetch(
-    `https://newsapi.org/v2/everything?q=${news}&apiKey=4cb0d0900a824cada0e90e272a031922`
+    `${BASE_URL}?q=${news}&apiKey=${apiKey}&pageSize=9&page=${page}`
   ).then((result) => result.json());
 }
 function createArticleMarkup(article) {
